@@ -2,7 +2,7 @@
 /*
 Plugin Name: Hotel Parking Service
 Description: A plugin to manage hotel parking services.
-Version: 0.1.5
+Version: 0.1.6
 Author: Genesis Lloret Ramos
 */
 if (!defined('ABSPATH')) { exit; }
@@ -52,5 +52,25 @@ function hps_plugin_deactivate() {
         include $module_file;
         delete_option('hps_module_' . sanitize_title($mod_name));
     }
+}
+register_activation_hook(__FILE__, 'hps_create_module_table');
+function hps_create_module_table() {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'hps_modules';
+    $charset_collate = $wpdb->get_charset_collate();
+    $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        mod_name varchar(100) NOT NULL,
+        mod_version varchar(10) NOT NULL,
+        mod_description text NOT NULL,
+        mod_author varchar(100) NOT NULL,
+        mod_always_enabled tinyint(1) NOT NULL,
+        mod_menu tinyint(1) NOT NULL,
+        mod_has_options text NOT NULL,
+        mod_WSForm_moderation tinyint(1) NOT NULL,
+        PRIMARY KEY (id)
+    ) $charset_collate;";
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    dbDelta($sql);
 }
 hps_load_modules();
