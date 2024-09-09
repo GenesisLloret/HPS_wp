@@ -1,26 +1,5 @@
 <?php
 if (!defined('ABSPATH')) {exit;}
-function hps_load_modules() {
-    $mods_dir = plugin_dir_path(__FILE__) . '../mods/';
-    $module_files = glob($mods_dir . '*.php');
-    foreach ($module_files as $module_file) {
-        include $module_file;
-        $existing_settings = get_option('hps_module_' . sanitize_title($mod_name), false);
-        if (!$existing_settings) {
-            $module_settings = [
-                'mod_name' => $mod_name,
-                'mod_version' => $mod_version,
-                'mod_description' => $mod_description,
-                'mod_author' => $mod_author,
-                'mod_always_enabled' => $mod_always_enabled,
-                'mod_menu' => $mod_menu,
-                'mod_has_options' => $mod_has_options,
-                'mod_WSForm_moderation' => $mod_WSForm_moderation,
-            ];
-            update_option('hps_module_' . sanitize_title($mod_name), $module_settings);
-        }
-    }
-}
 function hps_render_admin_page() {
     hps_load_modules();
     $mods = glob(plugin_dir_path(__FILE__) . '../mods/*.php');

@@ -22,9 +22,13 @@ jQuery(document).ready(function ($) {
                         button.text('Activar');
                         button.data('module-active', 1);
                     }
-                } else {alert(response.data.message);}
+                } else {
+                    alert(response.data.message);
+                }
             },
-            error: function () {alert('Error al intentar cambiar el estado del módulo.');}
+            error: function () {
+                alert('Error al intentar cambiar el estado del módulo.');
+            }
         });
     });
 });
