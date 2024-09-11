@@ -2,7 +2,7 @@
 /*
 Plugin Name: Hotel Parking Service
 Description: A plugin to manage hotel parking services.
-Version: 0.1.11
+Version: 0.1.12
 Author: Genesis Lloret Ramos
 Text Domain: hps-hub
 */
