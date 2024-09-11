@@ -1,10 +1,12 @@
 <?php
 if (!defined('ABSPATH')) {exit;}
+
 class HPS_Hub_Upload {
     public static function init() {
         add_action('admin_menu', [__CLASS__, 'add_upload_page']);
         add_action('admin_post_hps_hub_handle_upload', [__CLASS__, 'handle_upload']);
     }
+
     public static function add_upload_page() {
         add_submenu_page(
             'hps-hub',
@@ -15,6 +17,7 @@ class HPS_Hub_Upload {
             [__CLASS__, 'upload_page']
         );
     }
+
     public static function upload_page() {
         ?>
         <div class="wrap">
@@ -33,23 +36,41 @@ class HPS_Hub_Upload {
         </div>
         <?php
     }
+
     public static function handle_upload() {
-        if (!isset($_POST['hps_hub_upload_nonce_field']) || !wp_verify_nonce($_POST['hps_hub_upload_nonce_field'], 'hps_hub_upload_nonce')) {wp_die(__('Fallo de seguridad. No se pudo verificar el nonce.', 'hps-hub'));}
-        if (!isset($_FILES['extension_zip']) || $_FILES['extension_zip']['error'] != UPLOAD_ERR_OK) {wp_die(__('Hubo un problema con la subida del archivo.', 'hps-hub'));}
+        if (!isset($_POST['hps_hub_upload_nonce_field']) || !wp_verify_nonce($_POST['hps_hub_upload_nonce_field'], 'hps_hub_upload_nonce')) {
+            wp_die(__('Fallo de seguridad. No se pudo verificar el nonce.', 'hps-hub'));
+        }
+
+        if (!isset($_FILES['extension_zip']) || $_FILES['extension_zip']['error'] != UPLOAD_ERR_OK) {
+            wp_die(__('Hubo un problema con la subida del archivo.', 'hps-hub'));
+        }
+
         $uploaded_file = $_FILES['extension_zip'];
-        var_dump($uploaded_file['type']);
-        exit;
+
+        // Tipos MIME permitidos para archivos ZIP
         $allowed_mime_types = ['application/zip', 'application/x-zip-compressed', 'multipart/x-zip', 'application/x-compressed'];
-        if (!in_array($uploaded_file['type'], $allowed_mime_types)) {wp_die(__('Solo se permiten archivos ZIP.', 'hps-hub'));}
+
+        if (!in_array($uploaded_file['type'], $allowed_mime_types)) {
+            wp_die(__('Solo se permiten archivos ZIP.', 'hps-hub'));
+        }
+
         $upload_dir = HPS_HUB_PLUGIN_DIR . 'exts/';
         $zip_path = $upload_dir . basename($uploaded_file['name']);
-        if (!move_uploaded_file($uploaded_file['tmp_name'], $zip_path)) {wp_die(__('No se pudo mover el archivo subido.', 'hps-hub'));}
+
+        if (!move_uploaded_file($uploaded_file['tmp_name'], $zip_path)) {
+            wp_die(__('No se pudo mover el archivo subido.', 'hps-hub'));
+        }
+
         $zip = new ZipArchive;
         if ($zip->open($zip_path) === TRUE) {
             $zip->extractTo($upload_dir);
             $zip->close();
             unlink($zip_path);
-        } else {wp_die(__('No se pudo descomprimir el archivo ZIP.', 'hps-hub'));}
+        } else {
+            wp_die(__('No se pudo descomprimir el archivo ZIP.', 'hps-hub'));
+        }
+
         wp_redirect(admin_url('admin.php?page=hps-hub&upload=success'));
         exit;
     }
