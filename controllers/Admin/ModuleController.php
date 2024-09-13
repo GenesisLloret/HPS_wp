@@ -7,7 +7,7 @@ use HPSHUB\Models\ModuleModel;
 if (!defined('ABSPATH')) {
     exit;
 }
-
+if (!class_exists('HPSHUB\Controllers\Admin\ModuleController')) {
 class ModuleController {
     public static function init() {
         add_action('admin_menu', [__CLASS__, 'add_modules_page']);
@@ -70,4 +70,6 @@ class ModuleController {
         wp_redirect(admin_url('admin.php?page=hpshub-modules'));
         exit;
     }
+}
+
 }

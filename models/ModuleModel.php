@@ -2,15 +2,13 @@
 
 namespace HPSHUB\Models;
 
-use HPSHUB\Includes\Core\Helper;
-
 if (!defined('ABSPATH')) {
     exit;
 }
 
 class ModuleModel {
     public static function get_all_modules() {
-        $modules_dir = Helper::get_modules_dir();
+        $modules_dir = HPSHUB_DIR . 'modules/';
         $modules = [];
 
         if (is_dir($modules_dir)) {
@@ -19,7 +17,7 @@ class ModuleModel {
                 if ($dir === '.' || $dir === '..') {
                     continue;
                 }
-                $info = Helper::get_module_info($dir);
+                $info = self::get_module_info($dir);
                 if ($info) {
                     $modules[$dir] = $info;
                 }
@@ -30,8 +28,7 @@ class ModuleModel {
     }
 
     public static function get_active_modules() {
-        $active_modules = get_option('hpshub_modules', []);
-        return $active_modules;
+        return get_option('hpshub_modules', []);
     }
 
     public static function activate_module($module_slug) {
@@ -52,7 +49,7 @@ class ModuleModel {
 
     public static function delete_module($module_slug) {
         self::deactivate_module($module_slug);
-        $module_dir = Helper::get_modules_dir() . $module_slug;
+        $module_dir = HPSHUB_DIR . 'modules/' . $module_slug;
         self::delete_directory($module_dir);
     }
 
@@ -73,5 +70,13 @@ class ModuleModel {
             }
             rmdir($dir);
         }
+    }
+
+    public static function get_module_info($module_slug) {
+        $info_file = HPSHUB_DIR . 'modules/' . $module_slug . '/info.json';
+        if (file_exists($info_file)) {
+            return json_decode(file_get_contents($info_file), true);
+        }
+        return null;
     }
 }
