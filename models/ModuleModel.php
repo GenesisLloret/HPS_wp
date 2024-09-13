@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
 
 class ModuleModel {
     public static function get_all_modules() {
-        $modules_dir = HPSHUB_DIR . 'modules/';
+        $modules_dir = HPSHUB_DIR . 'Modules/';
         $modules = [];
 
         if (is_dir($modules_dir)) {
@@ -49,7 +49,7 @@ class ModuleModel {
 
     public static function delete_module($module_slug) {
         self::deactivate_module($module_slug);
-        $module_dir = HPSHUB_DIR . 'modules/' . $module_slug;
+        $module_dir = HPSHUB_DIR . 'Modules/' . $module_slug;
         self::delete_directory($module_dir);
     }
 
@@ -73,7 +73,7 @@ class ModuleModel {
     }
 
     public static function get_module_info($module_slug) {
-        $info_file = HPSHUB_DIR . 'modules/' . $module_slug . '/info.json';
+        $info_file = HPSHUB_DIR . 'Modules/' . $module_slug . '/info.json';
         if (file_exists($info_file)) {
             return json_decode(file_get_contents($info_file), true);
         }

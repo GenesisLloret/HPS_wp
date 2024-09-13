@@ -7,7 +7,7 @@ use HPSHUB\Models\ModuleModel;
 if (!defined('ABSPATH')) {
     exit;
 }
-if (!class_exists('HPSHUB\Controllers\Admin\ModuleController')) {
+
 class ModuleController {
     public static function init() {
         add_action('admin_menu', [__CLASS__, 'add_modules_page']);
@@ -29,9 +29,17 @@ class ModuleController {
     public static function load_modules() {
         $active_modules = ModuleModel::get_active_modules();
         foreach ($active_modules as $module_slug) {
-            $module_init_file = HPSHUB_DIR . 'modules/' . $module_slug . '/init.php';
+            // Intenta cargar 'init.php'
+            $module_init_file = HPSHUB_DIR . 'Modules/' . $module_slug . '/init.php';
+            if (!file_exists($module_init_file)) {
+                // Si 'init.php' no existe, intenta cargar 'index.php'
+                $module_init_file = HPSHUB_DIR . 'Modules/' . $module_slug . '/index.php';
+            }
+
             if (file_exists($module_init_file)) {
                 include_once $module_init_file;
+            } else {
+                error_log("No se encontró el archivo de inicialización para el módulo: " . $module_slug);
             }
         }
     }
@@ -44,7 +52,7 @@ class ModuleController {
         $modules = ModuleModel::get_all_modules();
 
         // Cargar la vista
-        include HPSHUB_DIR . 'Views/Admin/modules/index.php';
+        include HPSHUB_DIR . 'Views/Admin/Modules/index.php';
     }
 
     public static function manage_module() {
@@ -60,16 +68,19 @@ class ModuleController {
         if ($module_slug && $action) {
             if ($action === 'activate') {
                 ModuleModel::activate_module($module_slug);
+                $message = 'Módulo activado correctamente.';
             } elseif ($action === 'deactivate') {
                 ModuleModel::deactivate_module($module_slug);
+                $message = 'Módulo desactivado correctamente.';
             } elseif ($action === 'delete') {
                 ModuleModel::delete_module($module_slug);
+                $message = 'Módulo eliminado correctamente.';
             }
+            wp_redirect(admin_url('admin.php?page=hpshub-modules&message=' . urlencode($message)));
+            exit;
         }
 
         wp_redirect(admin_url('admin.php?page=hpshub-modules'));
         exit;
     }
-}
-
 }

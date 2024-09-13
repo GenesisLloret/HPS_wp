@@ -80,11 +80,32 @@ class UploadModel {
             $zip->close();
             unlink($zip_path);  // Eliminar el archivo ZIP subido
 
+            // Verificar si hay una carpeta adicional dentro del módulo extraído
+            $subdirs = scandir($extract_path);
+            if (count($subdirs) === 3 && isset($subdirs[2]) && is_dir($extract_path . '/' . $subdirs[2])) {
+                // Mover contenido de la subcarpeta al directorio principal del módulo
+                $nested_dir = $extract_path . '/' . $subdirs[2];
+                self::move_directory_contents($nested_dir, $extract_path);
+                // Eliminar la carpeta vacía
+                rmdir($nested_dir);
+                error_log('Contenido movido desde ' . $nested_dir . ' a ' . $extract_path);
+            }
+
             error_log('Archivo ZIP descomprimido correctamente en: ' . $extract_path);
             return ['success' => true];
         } else {
             error_log('Error al descomprimir el archivo ZIP.');
             return ['success' => false, 'message' => 'No se pudo descomprimir el archivo ZIP.'];
+        }
+    }
+
+    private static function move_directory_contents($source, $destination) {
+        $files = scandir($source);
+        foreach ($files as $file) {
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
+            rename($source . '/' . $file, $destination . '/' . $file);
         }
     }
 }
