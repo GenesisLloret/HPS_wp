@@ -1,6 +1,6 @@
 <?php
 
-namespace ModuleLoader\Controllers\Admin;
+namespace HPSHUB\Controllers\Admin;
 
 use HPSHUB\Models\UploadModel;
 

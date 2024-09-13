@@ -12,7 +12,7 @@ class Assets {
     }
 
     public static function enqueue_assets() {
-        wp_enqueue_style('module-loader-admin-css', MODULE_LOADER_URL . 'Assets/css/admin.css', [], MODULE_LOADER_VERSION);
-        wp_enqueue_script('module-loader-admin-js', MODULE_LOADER_URL . 'Assets/js/admin.js', ['jquery'], MODULE_LOADER_VERSION, true);
+        wp_enqueue_style('hpshub-admin-css', HPSHUB_URL . 'Assets/css/admin.css', [], HPSHUB_VERSION);
+        wp_enqueue_script('hpshub-admin-js', HPSHUB_URL . 'Assets/js/admin.js', ['jquery'], HPSHUB_VERSION, true);
     }
 }
