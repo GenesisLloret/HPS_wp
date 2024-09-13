@@ -30,7 +30,7 @@ class UploadController {
             wp_die('No tienes permiso para acceder a esta página.');
         }
 
-        include MODULE_LOADER_DIR . 'views/admin/upload/index.php';
+        include MODULE_LOADER_DIR . 'Views/Admin/upload/index.php';
     }
 
     public static function handle_upload() {

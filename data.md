@@ -2,7 +2,7 @@
 /*
 Plugin Name: Hotel Parking Service
 Description: Un plugin para gestionar servicios de estacionamiento en hoteles.
-Version: 0.2.2
+Version: 0.3.0
 Author: Genesis Lloret Ramos
 */
 
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Definir constantes del plugin
-define('MODULE_LOADER_VERSION', '0.2.2');
+define('MODULE_LOADER_VERSION', '0.3.0');
 define('MODULE_LOADER_DIR', plugin_dir_path(__FILE__));
 define('MODULE_LOADER_URL', plugin_dir_url(__FILE__));
 

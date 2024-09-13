@@ -44,7 +44,7 @@ class ModuleController {
         $modules = ModuleModel::get_all_modules();
 
         // Cargar la vista
-        include MODULE_LOADER_DIR . 'views/admin/modules/index.php';
+        include MODULE_LOADER_DIR . 'Views/Admin/modules/index.php';
     }
 
     public static function manage_module() {
