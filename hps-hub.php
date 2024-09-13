@@ -1,35 +1,54 @@
 <?php
 /*
 Plugin Name: Hotel Parking Service
-Description: A plugin to manage hotel parking services.
-Version: 0.1.15
+Description: Un plugin para gestionar servicios de estacionamiento en hoteles.
+Version: 0.2.0
 Author: Genesis Lloret Ramos
-Text Domain: hps-hub
 */
-if (!defined('ABSPATH')) {exit;}
-define('HPS_HUB_VERSION', '1.0');
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+// Definir constantes del plugin
+define('HPS_HUB_VERSION', '0.2.0');
 define('HPS_HUB_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('HPS_HUB_PLUGIN_URL', plugin_dir_url(__FILE__));
-require_once HPS_HUB_PLUGIN_DIR . 'admin/menu.php';
-require_once HPS_HUB_PLUGIN_DIR . 'admin/upload.php';
-require_once HPS_HUB_PLUGIN_DIR . 'admin/extensions.php';
-require_once HPS_HUB_PLUGIN_DIR . 'admin/settings.php';
-function hps_hub_activate() {
-    $config_file = HPS_HUB_PLUGIN_DIR . 'admin/config.json';
-    if (!file_exists($config_file)) {
-        $default_config = json_encode(['extensions' => []], JSON_PRETTY_PRINT);
-        file_put_contents($config_file, $default_config);
+
+// Registrar función de autoload
+spl_autoload_register('hps_hub_autoload');
+function hps_hub_autoload($class) {
+    if (strpos($class, 'HPS_Hub\\') === 0) {
+        $relative_class = substr($class, strlen('HPS_Hub\\'));
+        $class_path = str_replace('\\', DIRECTORY_SEPARATOR, $relative_class);
+        $class_file = HPS_HUB_PLUGIN_DIR . $class_path . '.php';
+        if (file_exists($class_file)) {
+            require_once $class_file;
+        }
     }
+}
+
+// Función de activación
+function hps_hub_activate() {
+    HPS_Hub\Includes\Core\Activator::activate();
 }
 register_activation_hook(__FILE__, 'hps_hub_activate');
+
+// Función de desinstalación
+function hps_hub_uninstall() {
+    HPS_Hub\Includes\Core\Uninstaller::uninstall();
+}
+register_uninstall_hook(__FILE__, 'hps_hub_uninstall');
+
+// Inicializar el plugin
 function hps_hub_init() {
     if (is_admin()) {
-        wp_enqueue_style('hps-hub-admin-css', HPS_HUB_PLUGIN_URL . 'assets/css/admin.css', [], HPS_HUB_VERSION);
-        wp_enqueue_script('hps-hub-admin-js', HPS_HUB_PLUGIN_URL . 'assets/js/admin.js', ['jquery'], HPS_HUB_VERSION, true);
+        HPS_Hub\Includes\Admin\Assets::init();
+        HPS_Hub\Controllers\Admin\MenuController::init();
+        HPS_Hub\Controllers\Admin\ExtensionsController::init();
+        HPS_Hub\Controllers\Admin\UploadController::init();
+        HPS_Hub\Controllers\Admin\SettingsController::init();
     }
-    if (class_exists('HPS_Hub_Menu')) {HPS_Hub_Menu::init();}
-    if (class_exists('HPS_Hub_Upload')) {HPS_Hub_Upload::init();}
-    if (class_exists('HPS_Hub_Extensions')) {HPS_Hub_Extensions::init();}
-    if (class_exists('HPS_Hub_Settings')) {HPS_Hub_Settings::init();}
 }
 add_action('plugins_loaded', 'hps_hub_init');
+
