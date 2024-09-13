@@ -1,18 +1,20 @@
 <?php
 
-namespace HPS_Hub\Models;
+namespace ModuleLoader\Models;
+
+use ModuleLoader\Includes\Core\Helper;
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
 class UploadModel {
-    public static function handle_extension_upload() {
-        if (!isset($_FILES['extension_zip']) || $_FILES['extension_zip']['error'] != UPLOAD_ERR_OK) {
+    public static function handle_module_upload() {
+        if (!isset($_FILES['module_zip']) || $_FILES['module_zip']['error'] != UPLOAD_ERR_OK) {
             return ['success' => false, 'message' => 'Hubo un problema con la subida del archivo.'];
         }
 
-        $uploaded_file = $_FILES['extension_zip'];
+        $uploaded_file = $_FILES['module_zip'];
 
         // Tipos MIME permitidos para archivos ZIP
         $allowed_mime_types = [
@@ -26,8 +28,13 @@ class UploadModel {
             return ['success' => false, 'message' => 'Solo se permiten archivos ZIP.'];
         }
 
-        $upload_dir = HPS_HUB_PLUGIN_DIR . 'exts/';
-        $zip_path = $upload_dir . basename($uploaded_file['name']);
+        $upload_dir = wp_upload_dir();
+        $upload_path = $upload_dir['basedir'] . '/module-loader/';
+        if (!file_exists($upload_path)) {
+            mkdir($upload_path, 0755, true);
+        }
+
+        $zip_path = $upload_path . basename($uploaded_file['name']);
 
         if (!move_uploaded_file($uploaded_file['tmp_name'], $zip_path)) {
             return ['success' => false, 'message' => 'No se pudo mover el archivo subido.'];
@@ -44,17 +51,16 @@ class UploadModel {
                     unlink($zip_path);
                     return ['success' => false, 'message' => 'El archivo ZIP contiene rutas no permitidas.'];
                 }
-
-                // Verificar tipos de archivos permitidos
-                $allowed_extensions = ['php', 'css', 'js', 'json', 'txt', 'md'];
-                $file_extension = pathinfo($filename, PATHINFO_EXTENSION);
-                if (!in_array($file_extension, $allowed_extensions)) {
-                    unlink($zip_path);
-                    return ['success' => false, 'message' => 'El archivo ZIP contiene archivos no permitidos.'];
-                }
             }
 
-            $zip->extractTo($upload_dir);
+            $module_name = basename($uploaded_file['name'], '.zip');
+            $extract_path = MODULE_LOADER_DIR . 'modules/' . $module_name;
+
+            if (!file_exists($extract_path)) {
+                mkdir($extract_path, 0755, true);
+            }
+
+            $zip->extractTo($extract_path);
             $zip->close();
             unlink($zip_path);
 

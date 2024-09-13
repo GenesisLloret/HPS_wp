@@ -1,19 +1,14 @@
 <div class="wrap">
-    <h1>Subir Extensiones</h1>
-    <?php if (isset($_GET['message']) && $_GET['message'] == 'upload_success') : ?>
-        <div class="notice notice-success is-dismissible">
-            <p>Extensión subida y descomprimida con éxito.</p>
-        </div>
-    <?php endif; ?>
+    <h1>Subir Módulos</h1>
     <form method="post" enctype="multipart/form-data" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
-        <input type="hidden" name="action" value="hps_hub_handle_upload">
-        <?php wp_nonce_field('hps_hub_upload_nonce', 'hps_hub_upload_nonce_field'); ?>
+        <?php wp_nonce_field('module_loader_upload_module', 'module_loader_nonce'); ?>
+        <input type="hidden" name="action" value="module_loader_handle_upload">
         <table class="form-table">
             <tr>
-                <th scope="row"><label for="extension_zip">Subir archivo ZIP de la extensión</label></th>
-                <td><input type="file" name="extension_zip" id="extension_zip" required></td>
+                <th scope="row"><label for="module_zip">Subir archivo ZIP del módulo</label></th>
+                <td><input type="file" name="module_zip" id="module_zip" required></td>
             </tr>
         </table>
-        <?php submit_button('Subir Extensión'); ?>
+        <?php submit_button('Subir Módulo'); ?>
     </form>
 </div>
