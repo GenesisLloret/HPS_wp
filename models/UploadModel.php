@@ -32,7 +32,7 @@ class UploadModel {
         }
 
         // Definir el directorio donde se va a extraer el módulo
-        $upload_dir = HPSHUB_DIR . 'modules/';
+        $upload_dir = HPSHUB_DIR . 'Modules/';
         if (!file_exists($upload_dir)) {
             mkdir($upload_dir, 0755, true);
             error_log('Directorio de módulos creado: ' . $upload_dir);
