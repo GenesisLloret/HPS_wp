@@ -2,7 +2,7 @@
 
 namespace ModuleLoader\Controllers\Admin;
 
-use ModuleLoader\Models\UploadModel;
+use HPSHUB\Models\UploadModel;
 
 if (!defined('ABSPATH')) {
     exit;

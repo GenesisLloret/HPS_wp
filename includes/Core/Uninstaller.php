@@ -1,6 +1,6 @@
 <?php
 
-namespace ModuleLoader\Includes\Core;
+namespace HPSHUB\Includes\Core;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -9,6 +9,6 @@ if (!defined('ABSPATH')) {
 class Uninstaller {
     public static function uninstall() {
         // Eliminar opciones y datos almacenados
-        delete_option('module_loader_modules');
+        delete_option('hpshub_modules');
     }
 }

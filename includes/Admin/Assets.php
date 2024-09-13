@@ -1,6 +1,6 @@
 <?php
 
-namespace ModuleLoader\Includes\Admin;
+namespace HPSHUB\Includes\Admin;
 
 if (!defined('ABSPATH')) {
     exit;

@@ -1,6 +1,6 @@
 <?php
 
-namespace ModuleLoader\Controllers\Admin;
+namespace HPSHUB\Controllers\Admin;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -13,10 +13,10 @@ class MenuController {
 
     public static function add_admin_menu() {
         add_menu_page(
-            'Module Loader',
-            'Module Loader',
+            'HPS Hub',
+            'HPS Hub',
             'manage_options',
-            'module-loader',
+            'hpshub',
             [__CLASS__, 'dashboard_page'],
             'dashicons-admin-plugins',
             6
@@ -29,7 +29,7 @@ class MenuController {
         }
 
         echo '<div class="wrap">';
-        echo '<h1>Module Loader</h1>';
+        echo '<h1>HPS Hub</h1>';
         echo '<p>Bienvenido al cargador de módulos.</p>';
         echo '</div>';
     }

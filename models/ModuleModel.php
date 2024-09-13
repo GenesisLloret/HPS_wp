@@ -1,8 +1,8 @@
 <?php
 
-namespace ModuleLoader\Models;
+namespace HPSHUB\Models;
 
-use ModuleLoader\Includes\Core\Helper;
+use HPSHUB\Includes\Core\Helper;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -30,7 +30,7 @@ class ModuleModel {
     }
 
     public static function get_active_modules() {
-        $active_modules = get_option('module_loader_modules', []);
+        $active_modules = get_option('hpshub_modules', []);
         return $active_modules;
     }
 
@@ -38,7 +38,7 @@ class ModuleModel {
         $active_modules = self::get_active_modules();
         if (!in_array($module_slug, $active_modules)) {
             $active_modules[] = $module_slug;
-            update_option('module_loader_modules', $active_modules);
+            update_option('hpshub_modules', $active_modules);
         }
     }
 
@@ -46,7 +46,7 @@ class ModuleModel {
         $active_modules = self::get_active_modules();
         if (($key = array_search($module_slug, $active_modules)) !== false) {
             unset($active_modules[$key]);
-            update_option('module_loader_modules', $active_modules);
+            update_option('hpshub_modules', $active_modules);
         }
     }
 

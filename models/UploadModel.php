@@ -1,8 +1,8 @@
 <?php
 
-namespace ModuleLoader\Models;
+namespace HPSHUB\Models;
 
-use ModuleLoader\Includes\Core\Helper;
+use HPSHUB\Includes\Core\Helper;
 
 if (!defined('ABSPATH')) {
     exit;

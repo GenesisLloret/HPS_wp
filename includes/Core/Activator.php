@@ -1,6 +1,6 @@
 <?php
 
-namespace ModuleLoader\Includes\Core;
+namespace HPSHUB\Includes\Core;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
 class Activator {
     public static function activate() {
         // Crear directorios necesarios
-        $modules_dir = MODULE_LOADER_DIR . 'modules/';
+        $modules_dir = HPSHUB_DIR . 'modules/';
         if (!file_exists($modules_dir)) {
             mkdir($modules_dir, 0755, true);
         }

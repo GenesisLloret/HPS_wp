@@ -1,6 +1,6 @@
 <?php
 
-namespace ModuleLoader\Includes\Core;
+namespace HPSHUB\Includes\Core;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
 
 class Helper {
     public static function get_modules_dir() {
-        return MODULE_LOADER_DIR . 'modules/';
+        return HPSHUB_DIR . 'modules/';
     }
 
     public static function get_module_info($module_slug) {
