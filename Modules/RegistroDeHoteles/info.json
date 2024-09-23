@@ -1,0 +1,8 @@
+{
+    "name": "Registro de Hoteles",
+    "description": "Permite configurar y mostrar un formulario de registro para hoteles.",
+    "version": "1.0.0",
+    "author": "Genesis Lloret Ramos",
+    "author_uri": "https://hotelparkingservice.es",
+    "license": "GPL-2.0-or-later"
+}
